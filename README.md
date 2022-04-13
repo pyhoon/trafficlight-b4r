@@ -7,7 +7,7 @@ Traffic Light LEDs controlled by Arduino UNO
 
 ** Each LED's turn on time can be set respectively
 
-** Show a count down no. of seconds in Log
+** Show countdown no. of seconds in Log
 
 **Breadboard view**
 
