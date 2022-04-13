@@ -1,0 +1,101 @@
+﻿Build1=Default,B4RDev
+Group=Default Group
+Library1=rcore
+NumberOfFiles=0
+NumberOfLibraries=1
+NumberOfModules=0
+Version=3.9
+@EndOfDesignText@
+
+#Region Project Attributes
+	#AutoFlushLogs: True
+	#CheckArrayBounds: True
+	#StackBufferSize: 300
+#End Region
+'Ctrl+Click to open the C code folder: ide://run?File=%WINDIR%\System32\explorer.exe&Args=%PROJECT%\Objects\Src
+
+Sub Process_Globals
+	Public Serial1 As Serial
+	Private Btn As Pin					' pin for the Button
+	Private LedR, LedY, LedG As Pin		' pins for the LEDs
+	Private Timer1 As Timer
+	Private LightOn = False As Boolean
+	Private BounceTime As ULong
+	Private BounceDelay = 10 As ULong
+	Private Mode As Int
+	Private Count As Int
+	Private const MaxR = 5, MaxY = 1, MaxG = 5 As Int 		' No of seconds LED stays On
+	Private const RED = 0, YELLOW = 1, GREEN = 2 As Int
+End Sub
+
+Private Sub AppStart
+	Serial1.Initialize(115200)
+	Log("AppStart")
+	
+	Timer1.Initialize("Timer1_Tick", 1000)
+	Btn.Initialize(Btn.A3, Btn.MODE_INPUT_PULLUP)		' Using the internal pull up resistor to prevent the pin from floating.
+	Btn.AddListener("Btn_StateChanged")
+	LedR.Initialize(9, LedR.MODE_OUTPUT)
+	LedY.Initialize(8, LedY.MODE_OUTPUT)
+	LedG.Initialize(7, LedG.MODE_OUTPUT)
+End Sub
+
+Private Sub Btn_StateChanged (State As Boolean)
+	' Log("State: ", State)
+	If Not(State) Then 						' If button is pressed down
+		If Millis - BounceTime < BounceDelay Then
+			Return
+		Else
+			BounceTime = Millis
+			LightOn = Not(LightOn) 			' Change the value of LightOn
+			Timer1.Enabled = LightOn 		' Enable Timer1
+			If LightOn Then
+				Log("Red")
+				Mode = RED
+				Count = MaxR
+				LedR.DigitalWrite(True) 	' Switch on Red LED
+				Log("Count: ", Count)
+			Else
+				LedR.DigitalWrite(False) 	' Switch off Red LED
+				LedY.DigitalWrite(False) 	' Switch off Yellow LED
+				LedG.DigitalWrite(False) 	' Switch off Green LED
+			End If
+		End If
+	End If
+End Sub
+
+Private Sub Timer1_Tick
+	Select Case Mode
+		Case GREEN
+			If Count = MaxY + 1 Then ' 1 Then
+				Log("Yellow")
+				Mode = YELLOW
+				Count = MaxY
+				LedG.DigitalWrite(False) 	' Green  LED 	=> Off
+				LedY.DigitalWrite(True) 	' Yellow LED 	=> On
+			Else
+				Count = Count - 1
+			End If
+		Case YELLOW
+			If Count = 1 Then
+				Log("Red")
+				Mode = RED
+				Count = MaxR
+				LedY.DigitalWrite(False) 	' Yellow LED 	=> Off
+				LedR.DigitalWrite(True) 	' Red 	 LED	=> On
+			Else
+				Count = Count - 1
+			End If
+		Case RED
+			If Count = 1 Then
+				Log("Green")
+				Mode = GREEN
+				Count = MaxG
+				LedR.DigitalWrite(False) 	' Red   LED 	=> Off
+				LedG.DigitalWrite(True) 	' Green LED 	=> On
+			Else
+				Count = Count - 1
+			End If
+	End Select
+	Log("Count: ", Count)
+End Sub
