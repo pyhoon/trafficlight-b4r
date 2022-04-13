@@ -9,9 +9,12 @@ Traffic Light LEDs controlled by Arduino UNO
 
 ** Show countdown no. of seconds in Log
 
-**Breadboard view**
+**Breadboard**
 
-<img src="https://github.com/pyhoon/trafficlight-b4r/raw/main/images/TrafficLight_bb.png" title="TrafficLight" />
+<img src="https://github.com/pyhoon/trafficlight-b4r/raw/main/images/TrafficLight_bb.png" title="Breadboard" />
+
+**Schematic**
+<img src="https://github.com/pyhoon/trafficlight-b4r/raw/main/images/TrafficLight_schem.png" title="Schematic" />
 
 Made with ❤ in B4X
 
