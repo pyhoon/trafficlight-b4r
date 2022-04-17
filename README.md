@@ -17,6 +17,10 @@ Traffic Light LEDs controlled by Arduino UNO
 
 <img src="https://github.com/pyhoon/trafficlight-b4r/raw/main/images/TrafficLight_schem.png" title="Schematic" />
 
+**YouTube**
+
+[![Alt text](https://img.youtube.com/vi/cIpKFJ1RgDQ/0.jpg)](https://youtu.be/cIpKFJ1RgDQ)
+
 Made with ❤ in B4X
 
 Download and Develop with B4R for FREE: https://www.b4x.com/b4r.html
